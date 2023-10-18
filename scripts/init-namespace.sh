@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ns=${1:-acmeco}
+ns=${1:-default}
 
 init_namespace() {
     kubectl create ns $ns

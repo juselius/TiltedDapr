@@ -4,7 +4,7 @@ top="$(cd "$(dirname "$BASH_SOURCE[0]")" >/dev/null 2>&1 && pwd)"
 
 if [ $# = 1 -o $# = 2 ]; then
     env=$1
-    ns=${2:-acmeco}
+    ns=${2:-default}
 else
     echo "usage: configure-dapr.sh env [namespace]"
     exit 1
