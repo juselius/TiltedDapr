@@ -17,7 +17,7 @@ dotnet tool restore
 
 If you are using vcluster, edit `./vcluster/templates/secrets.yaml` and add your own credentials.
 
-Environment:
+### Environment variables
 ```
 export LOG_LEVEL=3
 export CLIENT_PORT=8080
@@ -25,6 +25,14 @@ export SERVER_PORT=8085
 export SERVER_PROXY_PORT=8095
 export TILT_PORT=8050
 ```
+
+### Edit manifests
+
+At a minimum you need to replace the occurrence of `acmeco` in the following locations:
+
+* `Tiltfile`
+* `helm/*`
+* `vcluster/templates/*`
 
 The client listens on http://localhost:8080/.
 
