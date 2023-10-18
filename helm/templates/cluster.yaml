@@ -1,0 +1,26 @@
+{{- if .Values.cluster.enabled -}}
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ include "tilted-dapr.fullname" . }}
+  annotations:
+    linkerd.io/inject: disabled
+  labels:
+    {{- include "tilted-dapr.labels" . | nindent 4 }}
+spec:
+  instances: {{ .Values.cluster.instances | default "2" }}
+
+  # Example of rolling update strategy:
+  # - unsupervised: automated update of the primary once all
+  #                 replicas have been upgraded (default)
+  # - supervised: requires manual supervision to perform
+  #               the switchover of the primary
+  primaryUpdateStrategy: unsupervised
+  backup:
+    retentionPolicy: {{ .Values.cluster.backupRetention | default "60d" }}
+
+  storage:
+    size: {{ .Values.cluster.size | default "5Gi" }}
+{{- end }}
+
+

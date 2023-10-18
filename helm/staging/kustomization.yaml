@@ -1,0 +1,17 @@
+namePrefix: staging-
+namespace: default
+generatorOptions:
+  disableNameSuffixHash: true
+secretGenerator:
+  - name: tilted-dapr-appsettings
+    files:
+      - appsettings.json
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: tilted-dapr
+    path: deployment_patch.yaml
+bases:
+  - ../base

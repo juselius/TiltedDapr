@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <DefineConstants>FABLE_COMPILER</DefineConstants>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="index.html" />
+        <None Include="public/style.scss" />
+        <Compile Include="../Shared/Shared.fs" />
+        <Compile Include="Index.fs" />
+        <Compile Include="App.fs" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Fable.Core" Version="3.7.1" />
+      <PackageReference Include="Fable.FontAwesome.Free" Version="3.0.0" />
+      <PackageReference Include="Fable.React" Version="9.3.0" />
+      <PackageReference Include="Feliz" Version="2.7.0" />
+      <PackageReference Include="Feliz.Bulma" Version="3.0.0" />
+      <PackageReference Include="Feliz.Router" Version="4.0.0" />
+      <PackageReference Include="Thoth.Fetch" Version="3.0.1" />
+      <PackageReference Include="Thoth.Json" Version="10.2.0" />
+    </ItemGroup>
+</Project>

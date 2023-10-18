@@ -1,0 +1,26 @@
+- op: replace
+  path: /spec/template/spec/containers/0/env/0
+  value:
+    name: LOG_LEVEL
+    value: "4"
+# - op: add
+#   path: /spec/template/spec/containers/0/env/-
+#   value:
+#     name: DB_PASSWORD
+#     valueFrom:
+#       secretKeyRef:
+#         name: production-tilted-dapr-app
+#         key: password
+# - op: add
+#   path: /spec/template/spec/containers/0/env/-
+#   value:
+#     name: DB_USERNAME
+#     valueFrom:
+#       secretKeyRef:
+#         name: production-tilted-dapr-app
+#         key: username
+# - op: add
+#   path: /spec/template/spec/containers/0/env/-
+#   value:
+#     name: DB_HOST
+#     value: production-tilted-dapr-rw

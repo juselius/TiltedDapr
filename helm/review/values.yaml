@@ -1,0 +1,20 @@
+fullnameOverride: tilted-dapr
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/proxy-buffer-size: 128k
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+  hosts:
+    - host: x-review-tilted-dapr.dev.acmeco.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+       - x-review-tilted-dapr.dev.acmeco.io
+      secretName: x-review-tilted-dapr-tls
+
+cluster:
+  backupEnabled: false
+  instances: 1
