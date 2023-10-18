@@ -7,6 +7,7 @@ pkgs.mkShell {
       dapr-cli
       kustomize
       nodejs
+      vcluster
       # tilt
   ];
 

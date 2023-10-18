@@ -36,13 +36,21 @@ let webRoot =
         | Some root -> Path.GetFullPath root
         | None -> Path.Join [| contentRoot; "public" |]
 
-let port =
+let appPort =
     "SERVER_PORT"
     |> tryGetEnv
     |> Option.map int
     |> Option.defaultValue 8085
 
-let listenAddress = "http://0.0.0.0:" + port.ToString()
+let appHost = $"0.0.0.0:{appPort}"
 
-Log.Information $"Listen: {listenAddress}"
+let intraPort =
+    "INTERNAL_PORT"
+    |> tryGetEnv
+    |> Option.map int
+    |> Option.defaultValue 8000
+
+let intraHost = $"0.0.0.0:{intraPort}"
+
+Log.Information $"Listen: {appHost}"
 Log.Debug $"Public webroot: {webRoot}"

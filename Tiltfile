@@ -15,6 +15,7 @@ load('ext://namespace', 'namespace_inject')
 repository='registry.gitlab.com/acmeco/{name}'.format(name=name)
 host='{user}-tilt-{name}.dev.acmeco.io'.format(name=name, user=user)
 
+local('./scripts/configure-dapr.sh {user}-tilt {namespace}'.format(user=user, namespace=namespace))
 local("tar fc - review |tar xf - --transform='s/^review/_tilt/'", dir='./helm', quiet=True)
 local("sed -ri 's/x-review-/{user}-tilt-/' _tilt/*.yaml".format(user=user), dir='./helm', quiet=True)
 local("sed -ri 's/x-review-/{user}-tilt-/' _tilt/*.json".format(user=user), dir='./helm', quiet=True)

@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+  name: <x>-vcluster
+  namespace: acmeco
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: <x>-vcluster.dev.acmeco.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: <x>
+            port:
+              number: 443
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - <x>-vcluster.dev.acmeco.io
+    secretName: <x>-vcluster-tls

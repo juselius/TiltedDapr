@@ -1,3 +1,10 @@
+- op: add
+  path: /spec/template/metadata/annotations
+  value:
+    dapr.io/enabled: "true"
+    dapr.io/app-id: "x-review-tilted-dapr"
+    dapr.io/app-port: "8000"
+    dapr.io/config: "tracing"
 - op: replace
   path: /spec/template/spec/containers/0/env/0
   value:

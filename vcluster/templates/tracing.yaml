@@ -1,0 +1,26 @@
+apiVersion: jaegertracing.io/v1
+kind: "Jaeger"
+metadata:
+  name: jaeger
+  namespace: acmeco
+spec:
+  strategy: allInOne
+  ingress:
+    enabled: false
+  allInOne:
+    image: jaegertracing/all-in-one:1.22
+    options:
+      query:
+        base-path: /jaeger
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: tracing
+  namespace: acmeco
+spec:
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://jaeger-collector:9411/api/v2/spans"
+

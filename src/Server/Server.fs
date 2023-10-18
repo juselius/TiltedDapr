@@ -13,14 +13,10 @@ open Shared
 
 type Arguments =
     | Log_Level of level: int
-    | Port of port: int
-    | [<MainCommand; Last>] Dir of path: string
     interface IArgParserTemplate with
         member this.Usage =
             match this with
             | Log_Level _ -> "0=Error, 1=Warning, 2=Info, 3=Debug, 4=Verbose"
-            | Port _ -> "listen port (default 8085)"
-            | Dir _ -> "serve from dir"
 
 type Storage() =
     let todos = ResizeArray<_>()
@@ -60,8 +56,25 @@ let private addTodo (next: HttpFunc) (ctx: HttpContext) =
         | Error e -> return! RequestErrors.BAD_REQUEST "fail" next ctx
     }
 
+let testEventHandler (next: HttpFunc) (ctx: HttpContext) =
+    task {
+        let! msg = ctx.BindJsonAsync<string>()
+        Log.Information $"test event received: {msg}"
+        return! text msg next ctx
+    }
+
+let intraApp =
+    choose [
+        route "/test-events" >=> choose [
+                OPTIONS >=> Successful.NO_CONTENT // subscribe to dapr events on route
+                POST >=> testEventHandler
+            ]
+        RequestErrors.NOT_FOUND "Not Found"
+    ]
+
 let webApp =
     choose [
+        routePorts [ Settings.intraPort, intraApp ]
         GET >=> route "/api/getTodos" >=> getTodos
         POST >=> route "/api/addTodo" >=> addTodo
     ]
@@ -82,9 +95,10 @@ let configureSerilog level =
         .WriteTo.Console()
         .CreateLogger()
 
-let app port dir =
+let app =
     application {
-        url $"http://0.0.0.0:{port}"
+        url $"http://{Settings.appHost}"
+        url $"http://{Settings.intraHost}"
         use_router webApp
         memory_cache
         use_static "public"
@@ -107,9 +121,5 @@ let main argv =
     let args = parser.Parse argv
 
     Log.Logger <- configureSerilog (args.GetResult(Log_Level, defaultValue = 2))
-
-    let port = args.GetResult (Port, defaultValue = Settings.port)
-    let dir = args.GetResult (Dir, defaultValue = ".")
-
-    run (app port dir)
+    run app
     0
